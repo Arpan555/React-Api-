@@ -1,6 +1,8 @@
-import { FETCH_IMAGES } from "../Actions/index";
+import { FETCH_IMAGES,FILTER_IMAGES,RESET_IMAGES } from "../Actions/index";
 const initialState={
     images:[],
+    type:localStorage.getItem("type"),
+    limit:localStorage.getItem("limit")
 }
 export default function reducer(state=initialState,action){
     switch(action.type){
@@ -9,7 +11,16 @@ export default function reducer(state=initialState,action){
                 ...state,
                 images:action.payload
             }
-              default:
+        case RESET_IMAGES:
+            return{
+                images:[]
+            }
+        case FILTER_IMAGES:
+            return{
+                ...state,
+                images:action.payload
+            }
+        default:
             return state
     }
 }

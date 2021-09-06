@@ -1,5 +1,5 @@
 import axios from "axios"
-import { fetchImages} from "./Redux/Actions/allActions"
+import { fetchImages, filterImages} from "./Redux/Actions/allActions"
 
 const request=axios.create({
     baseURL:"http://shibe.online/api",
@@ -7,14 +7,21 @@ const request=axios.create({
 export const requestFetchImages=(state)=>{
     return async(dispatch)=>{
         try{
-                console.log(state)
                 const imageData=await request.get("/shibes?count=10",state)
-                console.log(imageData.data)
                 dispatch(fetchImages(imageData.data))
-               
-        }catch(err)
-        {
+        }catch(err){
             console.log(err)
         }
    }
+}
+export const requestFilteredImages=(state)=>{
+    return async(dispatch)=>{
+        const{limit,type}=state
+        try {
+            const filteredData=await request.get(`/${type}?count=${limit}`)
+            dispatch(filterImages(filteredData.data))
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
