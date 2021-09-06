@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React,{useState,useEffect} from "react"
+import "./App.css"
 function App() {
+  const[image,setImage]=useState(null)
+useEffect(() => {
+    getImageData();
+    async function getImageData() 
+    {
+      const res = await fetch("http://shibe.online/api/shibes?count=10");
+      const data = await res.json();
+      setImage(data) ;
+    }
+},[])
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Api Image Data</h1>
+          {image && (
+            <div>
+              {image.map((img,index) => (
+                <div key={index}>
+                    <img className="img-size" src={img} alt={img}/>
+                </div>
+              ))}
+
+            </div>
+          )}
     </div>
   );
 }
